@@ -8,6 +8,10 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db.init_app(app)
 
+# Create upload folder if it doesn't exist
+if not os.path.exists(app.config['UPLOAD_FOLDER']):
+    os.makedirs(app.config['UPLOAD_FOLDER'])
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
@@ -26,8 +30,10 @@ def upload_file():
         if image and allowed_file(image.filename) and ingredients and allowed_file(ingredients.filename):
             image_filename = secure_filename(image.filename)
             ingredients_filename = secure_filename(ingredients.filename)
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], image_filename))
-            ingredients.save(os.path.join(app.config['UPLOAD_FOLDER'], ingredients_filename))
+            image_path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
+            ingredients_path = os.path.join(app.config['UPLOAD_FOLDER'], ingredients_filename)
+            image.save(image_path)
+            ingredients.save(ingredients_path)
             product = Product(name=request.form['name'],
                               description=request.form['description'],
                               image_file=image_filename,
