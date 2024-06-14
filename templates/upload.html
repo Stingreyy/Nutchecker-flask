@@ -18,6 +18,12 @@
             <input type="file" name="image" accept="image/*" required><br>
             <label for="ingredients">Ingredients Image:</label>
             <input type="file" name="ingredients" accept="image/*" required><br>
+            <label for="category">Category:</label>
+            <select name="category" required>
+                {% for category in categories %}
+                <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select><br>
             <input type="submit" value="Upload">
         </form>
         {% with messages = get_flashed_messages() %}

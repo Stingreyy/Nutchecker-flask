@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Products</h1>
+        <form method="GET" action="{{ url_for('list_products') }}">
+            <input type="text" name="query" placeholder="Search for products...">
+            <input type="submit" value="Search">
+        </form>
+        <h2>Categories</h2>
+        <ul>
+            {% for category in categories %}
+            <li><a href="{{ url_for('products_by_category', category_id=category.id) }}">{{ category.name }}</a></li>
+            {% endfor %}
+        </ul>
+        <h2>Product List</h2>
+        <ul>
+            {% for product in products %}
+            <li>
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.description }}</p>
+                <img src="{{ url_for('static', filename='uploads/' ~ product.image_file) }}" alt="{{ product.name }}" style="max-width: 200px;">
+                <img src="{{ url_for('static', filename='uploads/' ~ product.ingredients_file) }}" alt="{{ product.name }} ingredients" style="max-width: 200px;">
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
